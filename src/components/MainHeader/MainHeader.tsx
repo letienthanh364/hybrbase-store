@@ -10,6 +10,11 @@ export default function MainHeader() {
 
   const isHomePage = pathname === "/";
 
+  const navigateItemClassname = classNames("font-medium", {
+    "hover:text-gray-600": isHomePage,
+    "hover:text-gray-300": !isHomePage,
+  });
+
   return (
     <header
       className={classNames("w-full  border-b ", {
@@ -26,24 +31,38 @@ export default function MainHeader() {
 
           {/* Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <Link href="/shop" className="text-sm hover:text-gray-600">
+            <Link href="/shop" className={navigateItemClassname}>
               Shop
             </Link>
-            <Link href="/stories" className="text-sm hover:text-gray-600">
+            <Link href="/stories" className={navigateItemClassname}>
               Stories
             </Link>
-            <Link href="/about" className="text-sm hover:text-gray-600">
+            <Link href="/about" className={navigateItemClassname}>
               About
             </Link>
           </div>
 
           {/* Search */}
-          <div className="hidden md:flex items-center border-b border-transparent focus-within:border-gray-300 transition-colors">
-            <Search className="h-4 w-4 mr-2 text-gray-500" />
+          <div
+            className={classNames(
+              "hidden md:flex items-center border-b border-transparent focus-within:border-gray-300 transition-colors",
+              {
+                "text-gray-500": isHomePage,
+                "text-gray-300": !isHomePage,
+              }
+            )}
+          >
+            <Search className="h-4 w-4 mr-2" />
             <input
               type="text"
               placeholder="Search"
-              className="border-none focus-visible:ring-0 focus-visible:outline-none p-0 h-8 text-sm"
+              className={classNames(
+                "border-none focus-visible:ring-0 focus-visible:outline-none p-0 h-8 text-sm",
+                {
+                  "placeholder:text-gray-500": isHomePage,
+                  "placeholder:text-gray-300": !isHomePage,
+                }
+              )}
             />
           </div>
         </div>
@@ -69,15 +88,13 @@ export default function MainHeader() {
           </button>
 
           {/* Cart */}
-          <Link href="/cart" className="relative">
+          <Link href="/cart" className={classNames("flex items-center gap-2")}>
             <ShoppingBag className="h-5 w-5" />
-            <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              3
-            </span>
+            <span className="text-xs">3</span>
           </Link>
 
           {/* Login */}
-          <Link href="/login" className="text-sm hover:text-gray-600">
+          <Link href="/login" className={navigateItemClassname}>
             Login
           </Link>
         </div>

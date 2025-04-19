@@ -81,7 +81,7 @@ const AboutNavigateList: NavigateItem[] = [
 
 export default function MainFooter() {
   return (
-    <footer className="bg-gray-100 py-16 border-t border-black px-4 md:px-6 lg:px-8 text-black">
+    <footer className="bg-white py-16 border-t border-black px-4 md:px-6 lg:px-8 text-black">
       <div className="container px-4 xl:px-6 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Newsletter Signup */}
