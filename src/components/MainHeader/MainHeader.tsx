@@ -1,10 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import { Search, ShoppingBag } from "lucide-react";
+import { usePathname } from "next/navigation";
+import classNames from "classnames";
 
 export default function MainHeader() {
+  const pathname = usePathname();
+
+  const isHomePage = pathname === "/";
+
   return (
-    <header className="w-full bg-white border-b border-gray-200 text-black">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+    <header
+      className={classNames("w-full  border-b ", {
+        "bg-white border-gray-200 text-black": isHomePage,
+        "bg-black border-gray-200 text-white": !isHomePage,
+      })}
+    >
+      <div className="container px-4 xl:px-6 mx-auto h-16 flex items-center justify-between">
         <div className="w-full flex justify-start gap-8">
           {/* Logo */}
           <Link href="/" className="font-bold text-xl">
