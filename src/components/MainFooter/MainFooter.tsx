@@ -1,5 +1,3 @@
-"use client";
-
 import { NavigateItem } from "@/types/_common/navigateItem.type";
 import Link from "next/link";
 import React from "react";
@@ -83,7 +81,7 @@ const AboutNavigateList: NavigateItem[] = [
 
 export default function MainFooter() {
   return (
-    <footer className="bg-gray-50 py-16 px-4 md:px-6 lg:px-8 text-black">
+    <footer className="bg-gray-100 py-16 border-t border-black px-4 md:px-6 lg:px-8 text-black">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Newsletter Signup */}
