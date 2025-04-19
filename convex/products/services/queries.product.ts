@@ -3,7 +3,7 @@ import { query } from "../../_generated/server";
 import { v } from "convex/values";
 import { Id } from "../../_generated/dataModel";
 import { ProductQueryParams } from "../entities/product.query.type";
-import { docToProduct } from "../entities/product.type";
+import { docToProduct, Product } from "../entities/product.type";
 import { ProductListResponse } from "../entities/productList.type";
 
 export const getProducts = query({
@@ -112,7 +112,7 @@ export const getProductDetail = query({
   args: {
     id: v.string(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<Product> => {
     const product = await ctx.db.get(args.id as Id<"products">);
 
     if (!product) {
