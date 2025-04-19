@@ -2,7 +2,7 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
-  // Users table
+  // ! Users table
   users: defineTable({
     email: v.string(),
     password: v.string(), // Hashed password
@@ -24,7 +24,24 @@ export default defineSchema({
     role: v.string(), // "USER" or "ADMIN"
   }).index("by_email", ["email"]),
 
-  // Orders table
+  // ! Carts table
+  carts: defineTable({
+    userId: v.string(),
+    items: v.array(
+      v.object({
+        productId: v.id("products"),
+        name: v.string(),
+        color: v.string(),
+        colorCode: v.string(),
+        size: v.string(),
+        quantity: v.number(),
+        unitPrice: v.number(),
+      })
+    ),
+    updatedAt: v.number(),
+  }).index("by_userId", ["userId"]),
+
+  // ! Orders table
   orders: defineTable({
     subtotal: v.number(),
     total: v.number(),
@@ -57,7 +74,7 @@ export default defineSchema({
     orderDate: v.number(), // timestamp
   }).index("by_user", ["userId"]),
 
-  // Products table (based on the provided interface)
+  // ! Products table
   products: defineTable({
     name: v.string(),
     description: v.string(),

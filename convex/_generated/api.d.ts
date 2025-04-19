@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as cart_index from "../cart/index.js";
 import type * as products_index from "../products/index.js";
 import type * as user_index from "../user/index.js";
 
@@ -25,6 +26,7 @@ import type * as user_index from "../user/index.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  "cart/index": typeof cart_index;
   "products/index": typeof products_index;
   "user/index": typeof user_index;
 }>;
