@@ -4,10 +4,14 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 
 export default function Home() {
-  const tasks = useQuery(api.tasks.get);
+  const { data: products, total } = useQuery(api.product.getProducts, {}) || {
+    data: [],
+    total: 0,
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {tasks?.map(({ _id, text }) => <div key={_id}>{text}</div>)}
+      {products?.map((product) => <div key={product.id}>{product.name}</div>)}
     </main>
   );
 }
