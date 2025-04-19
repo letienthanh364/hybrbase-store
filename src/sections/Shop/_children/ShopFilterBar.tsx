@@ -42,7 +42,7 @@ export default function ShopFilterBar() {
                 onChange={() => toggleCategory(category)}
                 className="h-4 w-4 rounded border-gray-300 text-black focus:ring-0"
               />
-              <span className="text-sm">{category}</span>
+              <span className="text-sm capitalize">{category}</span>
             </label>
           ))}
         </div>

@@ -19,7 +19,7 @@ const LogoImageList: { image: string }[] = [
 export default function HeroSection() {
   return (
     <section className="w-full bg-gray-50 py-6 md:py-12">
-      <div className="container px-4 xl:px-6 mx-auto px-4 flex flex-col items-center gap-12">
+      <div className="container xl:px-6 mx-auto px-4 flex flex-col items-center gap-12">
         <div className="max-w-3xl mx-auto text-center flex flex-col gap-4 lg:gap-6 items-center">
           <h3 className="text-xl md:text-2xl lg:text-4xl font-bold">
             Better clothing for the planet

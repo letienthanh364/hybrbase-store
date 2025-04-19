@@ -1,9 +1,9 @@
 export interface ProductQueryParams {
   search?: string;
-  category?: string;
+  category?: string[];
+  color?: string[];
   minPrice?: number;
   maxPrice?: number;
-  color?: string;
   size?: string;
   tag?: string;
   sortBy?: string;

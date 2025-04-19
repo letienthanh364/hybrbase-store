@@ -32,16 +32,16 @@ interface FilterState {
 
 export const useShopFilterStore = create<FilterState>((set) => ({
   // Initial state
-  selectedCategories: ["Jackets"],
+  selectedCategories: [],
   selectedColors: [],
   categories: [
-    "Jackets",
-    "Fleece",
-    "Sweatshirts & Hoodies",
-    "Sweaters",
-    "Shirts",
-    "T-Shirts",
-    "Pants & Jeans",
+    "jackets",
+    "fleece",
+    "sweatshirts & hoodies",
+    "sweaters",
+    "shirts",
+    "t-shirts",
+    "pants & jeans",
   ],
   colors: [
     { name: "Orange", value: "#F8A878" },

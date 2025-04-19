@@ -9,15 +9,15 @@ import { ProductListResponse } from "../entities/productList.type";
 export const getProducts = query({
   args: {
     search: v.optional(v.string()),
-    category: v.optional(v.string()),
+    category: v.optional(v.array(v.string())), // Changed to string array
     minPrice: v.optional(v.number()),
     maxPrice: v.optional(v.number()),
-    color: v.optional(v.string()),
+    color: v.optional(v.array(v.string())), // Changed to string array
     size: v.optional(v.string()),
     tag: v.optional(v.string()),
     sortBy: v.optional(v.string()),
-    limit: v.optional(v.number()),
     page: v.optional(v.number()),
+    limit: v.optional(v.number()),
   },
   handler: async (
     ctx,
@@ -34,9 +34,9 @@ export const getProducts = query({
       );
     }
 
-    if (args.category) {
-      filteredProducts = filteredProducts.filter(
-        (product) => product.category === args.category
+    if (args.category && args.category.length > 0) {
+      filteredProducts = filteredProducts.filter((product) =>
+        args.category!.includes(product.category)
       );
     }
 
@@ -52,9 +52,11 @@ export const getProducts = query({
       );
     }
 
-    if (args.color) {
+    if (args.color && args.color.length > 0) {
       filteredProducts = filteredProducts.filter((product) =>
-        product.subLists.some((subList) => subList.color.code === args.color)
+        product.subLists.some((subList) =>
+          args.color!.includes(subList.color.code)
+        )
       );
     }
 
