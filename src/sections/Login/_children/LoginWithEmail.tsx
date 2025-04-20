@@ -3,21 +3,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useLoginMethodStore } from "../_stores/useLoginMethods.store";
-import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+import { useAuth, useAuthStore } from "@/providers/authProvider";
+import AppPath from "@/constants/path.const";
 
 export default function LoginWithEmail() {
   const { setMethod } = useLoginMethodStore();
+  const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Use the Convex login mutation
-  const login = useMutation(api.user.login);
+  // Use our auth hook instead of direct Convex mutation
+  const { login, isLoading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,33 +30,30 @@ export default function LoginWithEmail() {
     }
 
     try {
-      setIsLoading(true);
-      // Call the Convex login mutation
-      const result = await login({ email, password });
+      // Call our login function from the auth store
+      await login(email, password);
 
-      // Store the token in cookies or localStorage based on "remember me" preference
+      // Set cookie based on remember me preference
+      // Note: token is already saved in localStorage by our Zustand store
       if (remember) {
         // For persistent auth (14 days)
-        Cookies.set("authToken", result.token, { expires: 14 });
-      } else {
-        // Session cookie that expires when browser is closed
-        Cookies.set("authToken", result.token);
+        const token = useAuthStore.getState().token;
+        if (token) {
+          Cookies.set("authToken", token, { expires: 14 });
+        }
       }
 
-      // Store user information if needed
-      localStorage.setItem("user", JSON.stringify(result.user));
-
-      // Redirect or update UI state
-      // You could redirect to dashboard or update app state here
-      console.log("Login successful", result);
-    } catch (error) {
-      // Handle Convex error
-      setError("Invalid email or password");
+      // Redirect to dashboard (our auth provider will handle this automatically,
+      // but we can also do it explicitly here if needed)
+      router.push(AppPath.home);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      // Handle login error
+      setError(error.message || "Invalid email or password");
       console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
+
   return (
     <div className="flex items-center justify-center w-full">
       <div className="w-full max-w-md p-8 bg-white">

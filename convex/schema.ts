@@ -5,24 +5,15 @@ export default defineSchema({
   // ! Users table
   users: defineTable({
     email: v.string(),
-    password: v.string(), // Hashed password
-    name: v.string(),
-    phone: v.string(),
-    address: v.union(
-      v.null(),
-      v.object({
-        firstName: v.string(),
-        lastName: v.string(),
-        address: v.string(),
-        apartment: v.optional(v.string()),
-        city: v.string(),
-        country: v.string(),
-        zipcode: v.string(),
-        note: v.optional(v.string()),
-      })
-    ),
-    role: v.string(), // "USER" or "ADMIN"
-  }).index("by_email", ["email"]),
+    password: v.string(),
+    name: v.optional(v.string()),
+    authToken: v.optional(v.string()), // Store token directly on user
+    tokenExpiry: v.optional(v.number()), // Token expiration timestamp
+    createdAt: v.number(),
+    lastLogin: v.optional(v.number()),
+  })
+    .index("by_email", ["email"])
+    .index("by_token", ["authToken"]), // Index for token lookup
 
   // ! Carts table
   carts: defineTable({

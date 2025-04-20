@@ -13,10 +13,11 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as auth from "../auth.js";
 import type * as cart from "../cart.js";
 import type * as order from "../order.js";
 import type * as product from "../product.js";
-import type * as user from "../user.js";
+import type * as user_services_auth from "../user/services/auth.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -27,10 +28,11 @@ import type * as user from "../user.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   cart: typeof cart;
   order: typeof order;
   product: typeof product;
-  user: typeof user;
+  "user/services/auth": typeof user_services_auth;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

@@ -8,5 +8,9 @@ import LoginWithEmail from "./_children/LoginWithEmail";
 export default function Login() {
   const { currentMethod } = useLoginMethodStore();
 
-  return currentMethod === "social" ? <LoginMethods /> : <LoginWithEmail />;
+  return (
+    <div className="py-8 w-full">
+      {currentMethod === "social" ? <LoginMethods /> : <LoginWithEmail />}
+    </div>
+  );
 }

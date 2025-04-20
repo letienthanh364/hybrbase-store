@@ -1,12 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingBag } from "lucide-react";
+import { Search, ShoppingBag, User } from "lucide-react";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import CustomPopover from "../CustomPopover";
+import { useAuthStore } from "@/stores/useAuthStore";
+import ProfilePopoverContent from "./ProfilePopoverContent";
 
 export default function MainHeader() {
   const pathname = usePathname();
+  const { isAuthenticated, user } = useAuthStore();
 
   const isHomePage = pathname === "/";
 
@@ -15,9 +19,11 @@ export default function MainHeader() {
     "hover:text-gray-300": !isHomePage,
   });
 
+  // Profile popover content
+
   return (
     <header
-      className={classNames("w-full  border-b ", {
+      className={classNames("w-full border-b", {
         "bg-white border-gray-200 text-black": isHomePage,
         "bg-black border-gray-200 text-white": !isHomePage,
       })}
@@ -59,8 +65,8 @@ export default function MainHeader() {
               className={classNames(
                 "border-none focus-visible:ring-0 focus-visible:outline-none p-0 h-8 text-sm",
                 {
-                  "placeholder:text-gray-500": isHomePage,
-                  "placeholder:text-gray-300": !isHomePage,
+                  "placeholder:text-gray-500 bg-white": isHomePage,
+                  "placeholder:text-gray-300 bg-black": !isHomePage,
                 }
               )}
             />
@@ -93,10 +99,28 @@ export default function MainHeader() {
             <span className="text-xs">3</span>
           </Link>
 
-          {/* Login */}
-          <Link href="/login" className={navigateItemClassname}>
-            Login
-          </Link>
+          {/* Conditional Login/Profile with Popover */}
+          {isAuthenticated ? (
+            <CustomPopover
+              trigger={
+                <div
+                  className={`flex items-center gap-2 ${navigateItemClassname}`}
+                >
+                  <User className="h-5 w-5" />
+                  <span className="hidden sm:inline">
+                    {user?.name || "Profile"}
+                  </span>
+                </div>
+              }
+              content={<ProfilePopoverContent />}
+              position="bottom"
+              width="w-56"
+            />
+          ) : (
+            <Link href="/login" className={navigateItemClassname}>
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>

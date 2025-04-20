@@ -19,7 +19,7 @@ export default function LoginMethods() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-full flex-1 shrink-0 ">
+    <div className="flex items-center justify-center">
       <div className="w-full max-w-md p-8 bg-white rounded-md shadow-md">
         <h1 className="mb-1 text-2xl font-bold text-gray-800">Welcome Back</h1>
         <p className="mb-6 text-gray-500">Login to continue</p>
