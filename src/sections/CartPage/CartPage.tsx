@@ -48,7 +48,7 @@ export default function CartPage() {
               {cartItems.map((item) => (
                 <div
                   key={item.productId}
-                  className=" border-b border-gray-600 py-4 grid grid-cols-4"
+                  className=" border-b border-gray-600 py-4 grid grid-cols-1 gap-4 md:grid-cols-4"
                 >
                   <div className="min-h-full aspect-square bg-gray-300 flex-shrink-0 relative">
                     <Image

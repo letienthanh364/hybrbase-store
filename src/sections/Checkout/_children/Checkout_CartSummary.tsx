@@ -21,24 +21,23 @@ export default function Checkout_CartSummary() {
   const total = selectedShipping ? subtotal + selectedShipping.price : subtotal; // Shipping will be calculated at next step
 
   return (
-    <div className="bg-white p-6 rounded">
-      <h2 className="text-2xl font-bold mb-6">Your cart</h2>
+    <div className="bg-white p-6">
+      <p className="text-2xl font-bold mb-6">Your cart</p>
 
       {cartItems.map((item) => (
         <div
           key={item.productId}
-          className="flex border-b border-gray-200 py-4 items-start"
+          className="flex flex-col sm:flex-row border-b space-y-2 border-gray-200 py-4 items-start"
         >
-          <div className="w-24 h-24 bg-gray-300 flex-shrink-0">
+          <div className="sm:w-24 w-full aspect-square bg-gray-300 flex-shrink-0 relative">
             <HandledImage
               src={item.avatar}
               alt={item.name}
-              width={96}
-              height={96}
+              fill
               className="object-cover"
             />
           </div>
-          <div className="ml-4 flex-grow">
+          <div className="md:ml-4 flex-grow">
             <h3 className="text-xl font-bold">{item.name}</h3>
             <p className="text-gray-600">Size: {item.size}</p>
             <p className="text-gray-600">Quantity: {item.quantity}</p>

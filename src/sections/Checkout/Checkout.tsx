@@ -43,7 +43,7 @@ const CheckoutLayout = () => {
   };
 
   return (
-    <div className="container py-8 ">
+    <div className="container py-8 px-4 xl:px-6 mx-auto">
       <CheckoutHeader />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-12">
