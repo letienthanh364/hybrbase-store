@@ -1,18 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { Search, ShoppingBag, User } from "lucide-react";
+import { Search, ShoppingBag, User, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
+import { useState } from "react";
 import CustomPopover from "../CustomPopover";
 import { useAuthStore } from "@/stores/useAuthStore";
 import ProfilePopoverContent from "./ProfilePopoverContent";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import SideDrawer from "../SideDrawer";
+import MainHeader_MobileContent from "./MainHeader_MobileContent";
 
 export default function MainHeader() {
   const pathname = usePathname();
   const { isAuthenticated, user } = useAuthStore();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isHomePage = pathname === "/";
 
@@ -21,8 +25,13 @@ export default function MainHeader() {
     "hover:text-gray-300": !isHomePage,
   });
 
+  // Mobile menu toggle
+  const openMobileMenu = () => setIsMobileMenuOpen(true);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   // ! cart data
   const cartLength = useQuery(api.cart.getCartLength, { userId: user?._id });
+
   return (
     <header
       className={classNames("w-full border-b", {
@@ -78,21 +87,12 @@ export default function MainHeader() {
         {/* Right Actions */}
         <div className="flex items-center space-x-6">
           {/* Mobile Menu Button (only shows on mobile) */}
-          <button className="md:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+          <button
+            className="md:hidden"
+            onClick={openMobileMenu}
+            aria-label="Open mobile menu"
+          >
+            <Menu className="h-6 w-6" />
           </button>
 
           {/* Cart */}
@@ -125,6 +125,16 @@ export default function MainHeader() {
           )}
         </div>
       </div>
+
+      {/* Mobile SideDrawer */}
+      <SideDrawer
+        isOpen={isMobileMenuOpen}
+        onClose={closeMobileMenu}
+        position="right"
+        title="Menu"
+      >
+        <MainHeader_MobileContent closeMobileMenu={closeMobileMenu} />
+      </SideDrawer>
     </header>
   );
 }

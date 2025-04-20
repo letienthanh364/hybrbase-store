@@ -3,6 +3,7 @@ import { mutation } from "../../_generated/server";
 
 export const createOrder = mutation({
   args: {
+    userId: v.string(),
     subtotal: v.number(),
     total: v.number(),
     addressModel: v.object({
@@ -16,7 +17,7 @@ export const createOrder = mutation({
       note: v.optional(v.string()),
     }),
     shippingModel: v.object({
-      type: v.union(v.literal("STANDARD"), v.literal("EXPRESS")),
+      type: v.string(),
       price: v.number(),
     }),
     products: v.array(
@@ -26,7 +27,7 @@ export const createOrder = mutation({
         unitPrice: v.number(),
         quantity: v.number(),
         size: v.string(),
-        color: v.string(),
+        colorCode: v.string(),
       })
     ),
     paymentStatus: v.union(
@@ -37,15 +38,7 @@ export const createOrder = mutation({
     ),
   },
   handler: async (ctx, args) => {
-    // Get the current authenticated user ID
-    const userId = await ctx.auth.getUserIdentity();
-    if (!userId) {
-      throw new Error(
-        "Unauthorized: User must be logged in to create an order"
-      );
-    }
-
-    // Create the new order
+    // ! Create the new order using the provided userId
     const orderId = await ctx.db.insert("orders", {
       subtotal: args.subtotal,
       total: args.total,
@@ -53,9 +46,58 @@ export const createOrder = mutation({
       shippingModel: args.shippingModel,
       products: args.products,
       paymentStatus: args.paymentStatus,
-      userId: userId.tokenIdentifier,
+      userId: args.userId,
       orderDate: Date.now(),
     });
+
+    // ! Update product quantities in inventory
+    for (const item of args.products) {
+      const product = await ctx.db.get(item.productId);
+      if (!product) {
+        continue; // Skip if product doesn't exist
+      }
+
+      // Find the right color and size combination to update
+      const updatedSubLists = product.subLists.map((subList) => {
+        if (subList.color.code === item.colorCode) {
+          // Update the specific size's inventory
+          const updatedSizeList = subList.sizeList.map((sizeItem) => {
+            if (sizeItem.size === item.size) {
+              return {
+                ...sizeItem,
+                inStore: Math.max(0, sizeItem.inStore - item.quantity),
+              };
+            }
+            return sizeItem;
+          });
+
+          return {
+            ...subList,
+            sizeList: updatedSizeList,
+          };
+        }
+        return subList;
+      });
+
+      // Update the product with new inventory levels
+      await ctx.db.patch(item.productId, {
+        subLists: updatedSubLists,
+      });
+    }
+
+    // ! Reset the user's cart by finding and replacing with empty items array
+    const userCarts = await ctx.db
+      .query("carts")
+      .withIndex("by_userId", (q) => q.eq("userId", args.userId))
+      .collect();
+
+    if (userCarts.length > 0) {
+      // Update the existing cart with empty items
+      await ctx.db.patch(userCarts[0]._id, {
+        items: [],
+        updatedAt: Date.now(),
+      });
+    }
 
     return orderId;
   },

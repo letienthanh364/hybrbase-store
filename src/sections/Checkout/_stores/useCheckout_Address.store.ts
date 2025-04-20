@@ -25,7 +25,7 @@ interface AddressState {
   setSaveContact: (saveContact: boolean) => void;
 }
 
-export const useAddressStore = create<AddressState>((set) => ({
+export const useCheckoutStore_Address = create<AddressState>((set) => ({
   addressData: {
     firstName: "",
     lastName: "",

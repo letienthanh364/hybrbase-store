@@ -71,7 +71,7 @@ export default function CustomPopover({
   };
 
   return (
-    <div className="relative inline-block">
+    <div className="relative w-full inline-block">
       {/* Trigger element */}
       <div ref={triggerRef} onClick={togglePopover} className="cursor-pointer">
         {trigger}
@@ -83,7 +83,7 @@ export default function CustomPopover({
           ref={popoverRef}
           className={`absolute z-50 ${getPositionStyles()} ${width} bg-white rounded-md shadow-lg border border-gray-200`}
         >
-          <div className="p-4">{content}</div>
+          <div className="p-2">{content}</div>
         </div>
       )}
     </div>

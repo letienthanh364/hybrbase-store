@@ -16,7 +16,7 @@ export default function ProfilePopoverContent() {
   };
 
   return (
-    <div className="flex flex-col space-y-3">
+    <div className="flex flex-col space-y-3 text-black">
       <div className="pb-2 border-b border-gray-100">
         <p className="font-semibold">{user?.name || "User"}</p>
         <p className="text-sm text-gray-500">{user?.email}</p>

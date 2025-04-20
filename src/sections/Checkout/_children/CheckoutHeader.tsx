@@ -1,9 +1,11 @@
 import React from "react";
-import useCheckoutStore from "../_stores/useCheckout.store";
+import useCheckoutStore, {
+  CheckoutSection,
+} from "../_stores/useCheckout.store";
 import classNames from "classnames";
 
 export default function CheckoutHeader() {
-  const { currentSection } = useCheckoutStore();
+  const { currentSection, setSection } = useCheckoutStore();
 
   const steps = [
     { id: "address", label: "Address" },
@@ -24,14 +26,17 @@ export default function CheckoutHeader() {
           return (
             <React.Fragment key={step.id}>
               {/* Step label */}
-              <p
+              <button
+                onClick={() => {
+                  setSection(step.id as CheckoutSection);
+                }}
                 className={classNames("", {
                   "font-medium": !isActive,
                   "font-semibold": isActive,
                 })}
               >
                 {step.label}
-              </p>
+              </button>
 
               {/* Connector line between steps */}
               {index < steps.length - 1 && (

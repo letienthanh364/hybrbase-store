@@ -4,6 +4,16 @@ import { create } from "zustand";
 // Define the possible checkout sections
 export type CheckoutSection = "address" | "shipping" | "payment";
 
+export type ShippingIdEnum = "ups-surepost" | "ups-ground";
+
+export interface ShippingOption {
+  id: ShippingIdEnum;
+  name: string;
+  description: string;
+  daysRange: string;
+  price: number;
+}
+
 // Define the store state type
 interface CheckoutState {
   // Current active section
@@ -11,6 +21,10 @@ interface CheckoutState {
 
   // Coupon code
   coupon: string;
+
+  // shipping
+  selectedShipping: ShippingOption | null;
+  setSelectedShipping: (id: ShippingOption) => void;
 
   // Actions to change the state
   setSection: (section: CheckoutSection) => void;
@@ -34,6 +48,7 @@ const useCheckoutStore = create<CheckoutState>((set, get) => ({
   // Initial state
   currentSection: "address",
   coupon: "",
+  selectedShipping: null,
 
   // Set the current section
   setSection: (section) => set({ currentSection: section }),
@@ -97,6 +112,9 @@ const useCheckoutStore = create<CheckoutState>((set, get) => ({
   isSectionActive: (section) => {
     return get().currentSection === section;
   },
+
+  // ! set shipping
+  setSelectedShipping: (selectedShipping) => set({ selectedShipping }),
 }));
 
 export default useCheckoutStore;

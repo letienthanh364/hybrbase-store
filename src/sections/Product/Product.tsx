@@ -13,6 +13,7 @@ import HandledImage from "@/components/HandledImage";
 import { useAuth } from "@/providers/authProvider";
 import AppPath from "@/constants/path.const";
 import { toast } from "sonner";
+import ProductReview from "../ProductReview";
 
 export default function Product() {
   const router = useRouter();
@@ -99,8 +100,8 @@ export default function Product() {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-20 pb-10">
-      <div className="flex flex-col md:flex-row">
+    <div className="container px-4 pt-20 pb-10 lg:space-y-10">
+      <div className="flex flex-col md:flex-row ">
         {/* Product Images - Left side */}
         <div className="w-full md:w-1/2">
           <div className="grid grid-cols-2 gap-2">
@@ -245,6 +246,8 @@ export default function Product() {
           </div>
         </div>
       </div>
+
+      <ProductReview productId={productId} />
     </div>
   );
 }

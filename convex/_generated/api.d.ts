@@ -17,6 +17,7 @@ import type * as auth from "../auth.js";
 import type * as cart from "../cart.js";
 import type * as order from "../order.js";
 import type * as product from "../product.js";
+import type * as review from "../review.js";
 import type * as user_services_auth from "../user/services/auth.js";
 
 /**
@@ -32,6 +33,7 @@ declare const fullApi: ApiFromModules<{
   cart: typeof cart;
   order: typeof order;
   product: typeof product;
+  review: typeof review;
   "user/services/auth": typeof user_services_auth;
 }>;
 export declare const api: FilterApi<

@@ -45,7 +45,7 @@ export interface OrderProduct {
   unitPrice: number;
   quantity: number;
   size: string;
-  color: string;
+  colorCode: string;
 }
 
 export enum PaymentStatus {

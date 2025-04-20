@@ -57,7 +57,7 @@ export default defineSchema({
         unitPrice: v.number(),
         quantity: v.number(),
         size: v.string(),
-        color: v.string(),
+        colorCode: v.string(),
       })
     ),
     paymentStatus: v.string(), // "PENDING", "PAID", "FAILED", or "REFUNDED"
@@ -105,4 +105,18 @@ export default defineSchema({
       })
     ),
   }).index("by_category", ["category"]),
+
+  // ! Review table
+  reviews: defineTable({
+    productId: v.string(),
+    rating: v.number(),
+    title: v.string(),
+    content: v.string(),
+    author: v.string(),
+    date: v.string(),
+    helpful: v.object({
+      yes: v.number(),
+      no: v.number(),
+    }),
+  }).index("by_product", ["productId"]),
 });

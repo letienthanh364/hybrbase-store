@@ -4,7 +4,8 @@ import React from "react";
 import useCheckoutStore from "../_stores/useCheckout.store";
 
 export default function Checkout_CartSummary() {
-  const { coupon, setCoupon } = useCheckoutStore();
+  const { coupon, setCoupon, currentSection, selectedShipping } =
+    useCheckoutStore();
 
   const { cartData } = CartServices.useGetCartData();
   const cartItems = cartData?.items || [];
@@ -17,7 +18,7 @@ export default function Checkout_CartSummary() {
     (sum, item) => sum + item.unitPrice * item.quantity,
     0
   );
-  const total = subtotal; // Shipping will be calculated at next step
+  const total = selectedShipping ? subtotal + selectedShipping.price : subtotal; // Shipping will be calculated at next step
 
   return (
     <div className="bg-white p-6 rounded">
@@ -70,7 +71,13 @@ export default function Checkout_CartSummary() {
 
         <div className="flex justify-between mb-2">
           <span>Shipping</span>
-          <span className="text-gray-600">Calculated at the next step</span>
+          <span className="text-gray-600">
+            {currentSection === "address"
+              ? "Calculated at the next step"
+              : selectedShipping
+                ? `$${selectedShipping.price}`
+                : "Please select a shipping method"}
+          </span>
         </div>
 
         <div className="flex justify-between font-bold mt-4 pt-4 border-t border-gray-200">
