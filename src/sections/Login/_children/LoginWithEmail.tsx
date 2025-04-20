@@ -12,8 +12,8 @@ export default function LoginWithEmail() {
   const { setMethod } = useLoginMethodStore();
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("thanh@gmail.com");
+  const [password, setPassword] = useState("123456789");
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState("");
 
