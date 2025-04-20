@@ -37,6 +37,6 @@ export const getCartLength = query({
     }
 
     // Return the total number of items in the cart
-    return cart.items.reduce((total, item) => total + item.quantity, 0);
+    return cart.items.length;
   },
 });

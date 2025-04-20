@@ -112,7 +112,7 @@ export const removeFromCart = mutation({
   args: {
     userId: v.string(),
     item: v.object({
-      productId: v.id("products"),
+      productId: v.string(),
       colorCode: v.string(),
       size: v.string(),
     }),
