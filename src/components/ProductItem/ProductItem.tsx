@@ -1,8 +1,8 @@
 import React from "react";
 import { Product } from "../../../convex/products/entities/product.type";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { generateNameId } from "@/utils/common.util";
+import HandledImage from "../HandledImage";
 
 interface ProductItemProps {
   product: Product;
@@ -24,8 +24,8 @@ export default function ProductItem({ product }: ProductItemProps) {
       className="flex flex-col gap-2 hover:bg-gray-200"
     >
       <div className="aspect-square bg-gray-300 w-full relative">
-        <Image
-          src={product.avatar || ""}
+        <HandledImage
+          src={product.avatar}
           alt={product.name}
           fill
           style={{ objectFit: "fill" }}

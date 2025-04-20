@@ -22,7 +22,7 @@ export default defineSchema({
       v.object({
         productId: v.id("products"),
         name: v.string(),
-        color: v.string(),
+        avatar: v.string(),
         colorCode: v.string(),
         size: v.string(),
         quantity: v.number(),

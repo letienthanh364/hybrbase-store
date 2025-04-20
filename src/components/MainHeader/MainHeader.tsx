@@ -7,6 +7,8 @@ import classNames from "classnames";
 import CustomPopover from "../CustomPopover";
 import { useAuthStore } from "@/stores/useAuthStore";
 import ProfilePopoverContent from "./ProfilePopoverContent";
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 export default function MainHeader() {
   const pathname = usePathname();
@@ -19,8 +21,8 @@ export default function MainHeader() {
     "hover:text-gray-300": !isHomePage,
   });
 
-  // Profile popover content
-
+  // ! cart data
+  const cartLength = useQuery(api.cart.getCartLength, { userId: user?._id });
   return (
     <header
       className={classNames("w-full border-b", {
@@ -96,7 +98,7 @@ export default function MainHeader() {
           {/* Cart */}
           <Link href="/cart" className={classNames("flex items-center gap-2")}>
             <ShoppingBag className="h-5 w-5" />
-            <span className="text-xs">3</span>
+            <span className="text-xs">{cartLength}</span>
           </Link>
 
           {/* Conditional Login/Profile with Popover */}

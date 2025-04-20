@@ -1,8 +1,8 @@
 "use client";
 
 import { getIdFromNameId } from "@/utils/common.util";
-import { useQuery } from "convex/react";
-import { usePathname } from "next/navigation";
+import { useMutation, useQuery } from "convex/react";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { HeartIcon, ShareIcon } from "lucide-react";
@@ -10,8 +10,14 @@ import { Product_SizeModel } from "../../../convex/products/entities/product.typ
 import Link from "next/link";
 import classNames from "classnames";
 import HandledImage from "@/components/HandledImage";
+import { useAuth } from "@/providers/authProvider";
+import AppPath from "@/constants/path.const";
+import { toast } from "sonner";
 
 export default function Product() {
+  const router = useRouter();
+  const { isAuthenticated, user } = useAuth();
+
   const pathname = usePathname();
   const pathnameArr = pathname.split("/");
   const nameId = pathnameArr[pathnameArr.length - 1];
@@ -21,10 +27,10 @@ export default function Product() {
   const defaultColor = product?.subLists[0];
 
   // State for quantity
-  const [quantity, setQuantity] = useState(2);
+  const [quantity, setQuantity] = useState(1);
   // State for selected size and color
   const [selectedSize, setSelectedSize] = useState("M");
-  const [selectedColor, setSelectedColor] = useState("brown");
+  const [selectedColor, setSelectedColor] = useState("#ffffff");
 
   useEffect(() => {
     if (defaultColor) {
@@ -59,6 +65,39 @@ export default function Product() {
 
   const imageUrlList = product?.images.map((ele) => ele?.url) || [];
 
+  // ! handle add to cart
+  const addToCartMutation = useMutation(api.cart.addToCart);
+  const onAddToCart = async () => {
+    if (!isAuthenticated) {
+      router.push(AppPath.login);
+      return;
+    }
+
+    if (!product || !user) return;
+
+    try {
+      await addToCartMutation({
+        userId: user._id,
+        item: {
+          productId: product.id,
+          name: product.name,
+          avatar: product.avatar || "",
+          colorCode: selectedColor,
+          size: selectedSize,
+          quantity: quantity,
+          unitPrice: product.price,
+        },
+      });
+
+      // Optional: Add success notification or feedback here
+      toast.success("Product added to cart successfully!");
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+      // Optional: Add error notification or feedback here
+      toast.error("Failed to add to cart. Please try again.");
+    }
+  };
+
   return (
     <div className="container mx-auto px-4 pt-20 pb-10">
       <div className="flex flex-col md:flex-row">
@@ -68,7 +107,7 @@ export default function Product() {
             {/* Placeholder for product images */}
             <div className="bg-gray-300 h-64 w-full relative">
               <HandledImage
-                src={product?.avatar || ""}
+                src={product?.avatar}
                 alt={`product avatar`}
                 fill
                 style={{ objectFit: "contain" }}
@@ -78,7 +117,7 @@ export default function Product() {
               <div key={index} className="bg-gray-300 h-64 w-full relative">
                 {index < imageUrlList.length ? (
                   <HandledImage
-                    src={imageUrlList[index] || ""}
+                    src={imageUrlList[index]}
                     alt={`product image ${index + 1}`}
                     fill
                     style={{ objectFit: "contain" }}
@@ -170,7 +209,10 @@ export default function Product() {
 
           {/* Quantity and Add to Cart */}
           <div className="flex items-end justify-start mt-4 gap-4">
-            <button className="bg-black text-white h-12 px-12 hover:bg-black/80">
+            <button
+              onClick={onAddToCart}
+              className="bg-black text-white h-12 px-12 hover:bg-black/80"
+            >
               Add to Cart - ${(product?.price || 0) * quantity}
             </button>
 

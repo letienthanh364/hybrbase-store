@@ -7,7 +7,7 @@ export const addToCart = mutation({
     item: v.object({
       productId: v.id("products"),
       name: v.string(),
-      color: v.string(),
+      avatar: v.string(),
       colorCode: v.string(),
       size: v.string(),
       quantity: v.number(),
@@ -28,7 +28,7 @@ export const addToCart = mutation({
       const existingItemIndex = existingCart.items.findIndex(
         (cartItem) =>
           cartItem.productId === item.productId &&
-          cartItem.color === item.color &&
+          cartItem.colorCode === item.colorCode &&
           cartItem.size === item.size
       );
 
@@ -68,7 +68,7 @@ export const updateCartItem = mutation({
     userId: v.string(),
     item: v.object({
       productId: v.id("products"),
-      color: v.string(),
+      colorCode: v.string(),
       size: v.string(),
       quantity: v.number(),
     }),
@@ -88,7 +88,7 @@ export const updateCartItem = mutation({
     const itemIndex = existingCart.items.findIndex(
       (cartItem) =>
         cartItem.productId === item.productId &&
-        cartItem.color === item.color &&
+        cartItem.colorCode === item.colorCode &&
         cartItem.size === item.size
     );
 
@@ -113,7 +113,7 @@ export const removeFromCart = mutation({
     userId: v.string(),
     item: v.object({
       productId: v.id("products"),
-      color: v.string(),
+      colorCode: v.string(),
       size: v.string(),
     }),
   },
@@ -133,7 +133,7 @@ export const removeFromCart = mutation({
       (cartItem) =>
         !(
           cartItem.productId === item.productId &&
-          cartItem.color === item.color &&
+          cartItem.colorCode === item.colorCode &&
           cartItem.size === item.size
         )
     );

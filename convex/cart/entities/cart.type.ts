@@ -3,7 +3,7 @@ import { Id } from "../../_generated/dataModel";
 export interface CartItem {
   productId: Id<"products">;
   name: string;
-  color: string;
+  avatar: string;
   colorCode: string;
   size: string;
   quantity: number;
